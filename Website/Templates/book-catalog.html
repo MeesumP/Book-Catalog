@@ -1,3 +1,33 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
-<h1>Test once more</h1>
+{% extends "base.html" %} {% block title %}Book Catalog{% endblock %} {% block content%}
+<h1 align="center">Books</h1>
+<div id="all-lyrics">
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <!-- Your Columns HERE -->
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Shelf</th>
+            {% if user.is_authenticated %}
+            <th scope="col">Delete</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Your rows inside the table HERE: -->
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.genre }}</td>
+            <td>{{ book.shelf }}</td>
+            {% if user.is_authenticated %}
+            <td><a href="/delete-{{ make_link(book.title) }}"></a>Delete Book</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
 {% endblock %}

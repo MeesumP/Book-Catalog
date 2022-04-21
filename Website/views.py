@@ -1,6 +1,6 @@
 from Website.models import Note, Book
 from Website.auth import login
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect
 from flask_login import login_user, login_required, logout_user, current_user
 from .models import Note, db
 import json
@@ -9,7 +9,10 @@ views = Blueprint("views", __name__)
 
 @views.route('/', methods=["GET"])
 def bookcatalog_page():
-    return render_template('book-catalog.html', user=current_user)
+    books = Book.query.all()
+    def make_objlink(title):
+        return title.replace(' ', '-')
+    return render_template('book-catalog.html', make_link=make_objlink, user=current_user, books=books)
 
 @views.route('/home', methods=["GET", "POST"])
 @login_required
@@ -57,3 +60,13 @@ def addbook_page():
             flash("Attempt Failed", category="error")
 
     return render_template('add-book.html', user=current_user)
+
+@views.route('/delete-<booktitle>')
+def delete_book(booktitle):
+    def make_title(linkedTitle):
+        return linkedTitle.replace('-', ' ')
+    book_title = make_title(booktitle)
+    book = Book.query.filter_by(title=book_title).first()
+    db.session.delete(book)
+    db.session.commit()
+    return redirect('/')
