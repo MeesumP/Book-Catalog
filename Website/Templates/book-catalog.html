@@ -23,7 +23,7 @@
             <td>{{ book.genre }}</td>
             <td>{{ book.shelf }}</td>
             {% if user.is_authenticated %}
-            <td><a href="/delete-{{ make_link(book.title) }}"></a>Delete Book</td>
+            <td><a href="/delete-{{ make_link(book.title) }}">Delete {{ book.title }}</a></td>
             {% endif %}
         </tr>
         {% endfor %}
