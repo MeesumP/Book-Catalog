@@ -16,3 +16,10 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(256), unique=True)
+    author = db.Column(db.String(1024))
+    genre = db.Column(db.String(256))
+    shelf = db.Column(db.Integer)

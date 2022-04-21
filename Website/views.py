@@ -1,4 +1,4 @@
-from Website.models import Note
+from Website.models import Note, Book
 from Website.auth import login
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
@@ -7,7 +7,11 @@ import json
 
 views = Blueprint("views", __name__)
 
-@views.route('/', methods=["GET", "POST"])
+@views.route('/', methods=["GET"])
+def bookcatalog_page():
+    return render_template('book-catalog.html', user=current_user)
+
+@views.route('/home', methods=["GET", "POST"])
 @login_required
 def home():
     if request.method == 'POST':
@@ -35,3 +39,21 @@ def delete_note():
             db.session.commit()
 
     return jsonify({})
+
+@views.route('add-book', methods=["GET", "POST"])
+def addbook_page():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        author = request.form.get('author')
+        genre = request.form.get('genre')
+        shelf = request.form.get('shelf')
+    
+        try:
+            new_book = Book(title=title, author=author, genre=genre, shelf=shelf)
+            db.session.add(new_book)
+            db.session.commit()
+            flash("Book Added!", category="success")
+        except:
+            flash("Attempt Failed", category="error")
+
+    return render_template('add-book.html', user=current_user)

@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <br>
+    <center><h1>Book Information</h1></center>
+    <br>
+    <form method="POST">
+      <textarea name="title" id="title" placeholder="Title" class="form-control"></textarea>
+      <br>
+      <textarea name="author" id="author" class="form-control" placeholder="Author"></textarea>
+      <br>
+      <textarea name="genre" id="genre" class="form-control" placeholder="Genre"></textarea>
+      <br>
+      <textarea name="shelf" id="shelf" placeholder="Shelf" class="form-control"></textarea>
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Add Book</button>
+      </div>
+    </form>
+    {% endblock %}
